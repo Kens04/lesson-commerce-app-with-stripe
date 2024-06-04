@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Database } from "@/lib/database.types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-const supabase = createServerComponentClient({ cookies });
+const supabase = createServerComponentClient<Database>({ cookies });
 const getAllLessons = async () => {
   const { data: lessons } = await supabase.from("lesson").select("*");
   return lessons;
