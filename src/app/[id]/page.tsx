@@ -1,10 +1,15 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import {
+  SupabaseClient,
+  createServerComponentClient,
+} from "@supabase/auth-helpers-nextjs";
 import React from "react";
 import { cookies } from "next/headers";
 import { Database } from "@/lib/database.types";
 
-const supabase = createServerComponentClient<Database>({ cookies });
-const getDetailesson = async (id: number) => {
+const getDetailesson = async (
+  id: number,
+  supabase: SupabaseClient<Database>
+) => {
   const { data: lesson } = await supabase
     .from("lesson")
     .select("*")
@@ -14,7 +19,8 @@ const getDetailesson = async (id: number) => {
 };
 
 const LessonDetailPage = async ({ params }: { params: { id: number } }) => {
-  const lesson = await getDetailesson(params.id);
+  const supabase = createServerComponentClient<Database>({ cookies });
+  const lesson = await getDetailesson(params.id, supabase);
 
   return (
     <div className="w-full max-w-3xl mx-auto py-16 px-8">
