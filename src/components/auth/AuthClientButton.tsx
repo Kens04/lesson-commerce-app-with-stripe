@@ -1,12 +1,19 @@
 "use client";
 
-import { Session } from "@supabase/auth-helpers-nextjs";
+import {
+  Session,
+  createClientComponentClient,
+} from "@supabase/auth-helpers-nextjs";
 import { Button } from "../ui/button";
 
 const AuthClientButton = ({ session }: { session: Session | null }) => {
-const handleSignIn = () => {
-  console.log("test");
-}
+  const supabase = createClientComponentClient();
+
+  const handleSignIn = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "github",
+    });
+  };
 
   return <Button onClick={handleSignIn}>サインイン</Button>;
 };
