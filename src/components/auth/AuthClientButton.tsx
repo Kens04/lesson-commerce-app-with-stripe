@@ -1,9 +1,14 @@
 "use client";
 
-const AuthClientButton = () => {
-  return (
-    <div>AuthClientButton</div>
-  )
+import { Session } from "@supabase/auth-helpers-nextjs";
+import { Button } from "../ui/button";
+
+const AuthClientButton = ({ session }: { session: Session | null }) => {
+const handleSignIn = () => {
+  console.log("test");
 }
 
-export default AuthClientButton
+  return <Button onClick={handleSignIn}>サインイン</Button>;
+};
+
+export default AuthClientButton;
