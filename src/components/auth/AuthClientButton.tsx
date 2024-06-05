@@ -14,6 +14,9 @@ const AuthClientButton = ({ session }: { session: Session | null }) => {
   const handleSignIn = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "github",
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
     });
   };
 
