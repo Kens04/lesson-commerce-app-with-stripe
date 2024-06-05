@@ -5,8 +5,10 @@ import {
   createClientComponentClient,
 } from "@supabase/auth-helpers-nextjs";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 const AuthClientButton = ({ session }: { session: Session | null }) => {
+  const router = useRouter();
   const supabase = createClientComponentClient();
 
   const handleSignIn = async () => {
@@ -15,7 +17,20 @@ const AuthClientButton = ({ session }: { session: Session | null }) => {
     });
   };
 
-  return <Button onClick={handleSignIn}>サインイン</Button>;
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
+
+  return (
+    <>
+      {session ? (
+        <Button onClick={handleSignOut}>ログアウト</Button>
+      ) : (
+        <Button onClick={handleSignIn}>サインイン</Button>
+      )}
+    </>
+  );
 };
 
 export default AuthClientButton;
