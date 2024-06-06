@@ -34,8 +34,10 @@ const getPremiumContent = async (
 
 const LessonDetailPage = async ({ params }: { params: { id: number } }) => {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const lesson = await getDetailesson(params.id, supabase);
-  const video = await getPremiumContent(params.id, supabase);
+  const [lesson, video] = await Promise.all([
+    await getDetailesson(params.id, supabase),
+    await getPremiumContent(params.id, supabase),
+  ]);
   const videoId = extractYouTubeVideoId(video?.video_url) as string;
 
   return (
