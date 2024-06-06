@@ -5,6 +5,8 @@ import {
 import React from "react";
 import { cookies } from "next/headers";
 import { Database } from "@/lib/database.types";
+import { YouTubeEmbed } from "@next/third-parties/google";
+import { extractYouTubeVideoId } from "@/utils/extractYoutubeVideoId";
 
 const getDetailesson = async (
   id: number,
@@ -34,12 +36,13 @@ const LessonDetailPage = async ({ params }: { params: { id: number } }) => {
   const supabase = createServerComponentClient<Database>({ cookies });
   const lesson = await getDetailesson(params.id, supabase);
   const video = await getPremiumContent(params.id, supabase);
-  console.log(video);
+  const videoId = extractYouTubeVideoId(video?.video_url) as string;
 
   return (
     <div className="w-full max-w-3xl mx-auto py-16 px-8">
       <h1 className="text-3xl mb-6">{lesson?.title}</h1>
       <p className="mb-8">{lesson?.description}</p>
+      <YouTubeEmbed height={400} videoid={videoId} />
     </div>
   );
 };
