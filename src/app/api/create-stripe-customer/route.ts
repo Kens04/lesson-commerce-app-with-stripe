@@ -27,8 +27,6 @@ export async function POST(req: NextRequest) {
     })
     .eq("id", id);
 
-  console.log(error);
-
   return NextResponse.json({
     message: `stripe customer created: ${customer.id}`,
   });
