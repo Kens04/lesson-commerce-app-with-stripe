@@ -7,11 +7,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import initStripe from "stripe";
 
-const PricingPage = () => {
+const getAllPlans = async () => {
+  const stripe = new initStripe(process.env.STRIPE_SECRET_KEY!);
+
+  const { data: plans } = await stripe.plans.list();
+
+  return plans;
+};
+
+const PricingPage = async () => {
+  const plans = await getAllPlans();
+
   return (
     <div className="w-full max-w-3xl mx-auto py-16 flex justify-around">
-      <Card className="shadow-md">
+      {plans.map((plan) => (
+      <Card className="shadow-md" key={plan.id}>
         <CardHeader>
           <CardTitle>月額プラン</CardTitle>
           <CardDescription>Month</CardDescription>
@@ -21,8 +33,9 @@ const PricingPage = () => {
           <Button>サブスクリプション契約する</Button>
         </CardFooter>
       </Card>
+      ))}
 
-      <Card className="shadow-md">
+      {/* <Card className="shadow-md">
         <CardHeader>
           <CardTitle>年額プラン</CardTitle>
           <CardDescription>Month</CardDescription>
@@ -31,7 +44,7 @@ const PricingPage = () => {
         <CardFooter>
           <Button>サブスクリプション契約する</Button>
         </CardFooter>
-      </Card>
+      </Card> */}
     </div>
   );
 };
