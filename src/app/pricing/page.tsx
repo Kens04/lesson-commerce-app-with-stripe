@@ -7,10 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import {
+  SupabaseClient,
+  createServerComponentClient,
+} from "@supabase/auth-helpers-nextjs";
 import initStripe, { Stripe } from "stripe";
 import { cookies } from "next/headers";
 import { profile } from "console";
+import { Database } from "@/lib/database.types";
 
 interface Plan {
   id: string;
@@ -46,15 +50,23 @@ const getAllPlans = async (): Promise<Plan[]> => {
   return sortedPlans;
 };
 
+const getProfileData = async (supabase: SupabaseClient<Database>) => {
+  const { data: profile } = await supabase.from("profile").select("*").single();
+  return profile;
+};
+
 const PricingPage = async () => {
   const supabase = createServerComponentClient({ cookies });
   const { data: user } = await supabase.auth.getSession();
 
-  const plans = await getAllPlans();
+  const [plans, profile] = await Promise.all([
+    await getAllPlans(),
+    await getProfileData(supabase),
+  ]);
 
-  const showSubscribeButton = !!user.session && !profile.is_subscribed;
+  const showSubscribeButton = !!user.session && !profile?.is_subscribed;
   const showCreateAccountButton = !user.session;
-  const showManageSubscriptionButton = !!user.session && profile.is_subscribed;
+  const showManageSubscriptionButton = !!user.session && profile?.is_subscribed;
 
   return (
     <div className="w-full max-w-3xl mx-auto py-16 flex justify-around">
