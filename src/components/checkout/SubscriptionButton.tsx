@@ -4,7 +4,9 @@ import { Button } from "../ui/button";
 
 const SubscriptionButton = ({ planId }: { planId: string }) => {
   const processSubscription = async () => {
-    await fetch(`http://localhost:3000/api/subscription/${planId}`);
+    const response = await fetch(
+      `http://localhost:3000/api/subscription/${planId}`
+    );
   };
 
   return (

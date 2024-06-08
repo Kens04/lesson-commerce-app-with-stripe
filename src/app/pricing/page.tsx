@@ -81,7 +81,7 @@ const PricingPage = async () => {
             {plan.price}円 / {plan.interval}
           </CardContent>
           <CardFooter>
-            {showSubscribeButton && <SubscriptionButton />}
+            {showSubscribeButton && <SubscriptionButton planId={plan.id} />}
             {showCreateAccountButton && <Button>ログインする</Button>}
             {showManageSubscriptionButton && (
               <Button>サブスクリプション管理する</Button>
