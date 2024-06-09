@@ -38,7 +38,7 @@ const LessonDetailPage = async ({ params }: { params: { id: number } }) => {
     await getDetailesson(params.id, supabase),
     await getPremiumContent(params.id, supabase),
   ]);
-  const videoId = extractYouTubeVideoId(video?.video_url) as string;
+  const videoId = extractYouTubeVideoId(video?.video_url!) as string;
 
   return (
     <div className="w-full max-w-3xl mx-auto py-16 px-8">
