@@ -7,17 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  SupabaseClient,
-  createServerComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import initStripe, { Stripe } from "stripe";
-import { cookies } from "next/headers";
-import { profile } from "console";
 import { Database } from "@/lib/database.types";
 import SubscriptionButton from "@/components/checkout/SubscriptionButton";
 import AuthServerButton from "@/components/auth/AuthServerButton";
 import Link from "next/link";
+import { supabaseServer } from "@/utils/supabaseServer";
 
 interface Plan {
   id: string;
@@ -59,7 +55,7 @@ const getProfileData = async (supabase: SupabaseClient<Database>) => {
 };
 
 const PricingPage = async () => {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = supabaseServer();
   const { data: user } = await supabase.auth.getSession();
 
   const [plans, profile] = await Promise.all([
@@ -86,7 +82,9 @@ const PricingPage = async () => {
             {showSubscribeButton && <SubscriptionButton planId={plan.id} />}
             {showCreateAccountButton && <AuthServerButton />}
             {showManageSubscriptionButton && (
-              <Button><Link href="/dashboard">サブスクリプション管理する</Link></Button>
+              <Button>
+                <Link href="/dashboard">サブスクリプション管理する</Link>
+              </Button>
             )}
           </CardFooter>
         </Card>
