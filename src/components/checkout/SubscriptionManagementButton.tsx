@@ -3,9 +3,14 @@
 import { Button } from "../ui/button";
 
 const SubscriptionManagementButton = () => {
+  const loadPortal = async () => {
+    const response = await fetch("http://localhost/api/portal");
+    const data = await response.json();
+  };
+
   return (
     <div>
-      <Button>サブスクリプション管理</Button>
+      <Button onClick={loadPortal}>サブスクリプション管理</Button>
     </div>
   );
 };
