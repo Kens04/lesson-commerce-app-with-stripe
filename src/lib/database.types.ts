@@ -34,7 +34,7 @@ export type Database = {
         Row: {
           created_at: string
           id: number
-          video_url?: string | null
+          video_url: string | null
         }
         Insert: {
           created_at?: string
