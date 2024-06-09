@@ -23,22 +23,20 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
       case "customer.subscription.created":
         const customerSubscriptionCreated = event.data.object;
-        await supabase.from ("profile").update({
-          is_subscribed: true,
-          interval: customerSubscriptionCreated.items.data[0].plan.interval,
-        })
-        .eq("stripe_customer", event.data.object.customer);
-        // Then define and call a function to handle the event customer.subscription.created
+        await supabase
+          .from("profile")
+          .update({
+            is_subscribed: true,
+            interval: customerSubscriptionCreated.items.data[0].plan.interval,
+          })
+          .eq("stripe_customer", event.data.object.customer);
         break;
       case "customer.subscription.deleted":
         const customerSubscriptionDeleted = event.data.object;
-        // Then define and call a function to handle the event customer.subscription.deleted
         break;
       case "customer.subscription.updated":
         const customerSubscriptionUpdated = event.data.object;
-        // Then define and call a function to handle the event customer.subscription.updated
         break;
-      // ... handle other event types
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
